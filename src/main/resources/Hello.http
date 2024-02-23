@@ -1,0 +1,24 @@
+### 유저 조회
+
+GET localhost:8080/admin/users
+content-Type: application/json
+
+### JWT 획득
+
+POST localhost:8080/login
+content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "p@ssword"
+}
+
+### 유저 가입
+
+POST localhost:8080/join
+content-Type: application/json
+
+{
+  "username": "test",
+  "password": "p@ssword"
+}
