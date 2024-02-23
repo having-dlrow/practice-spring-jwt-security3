@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.Member.MemberRepository;
+import com.example.demo.config.auth.PrincipalDetailsService;
 import com.example.demo.config.jwt.JwtAuthenticationFilter;
 import com.example.demo.config.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     @Autowired
-    private MemberRepository userRepository;
+    private PrincipalDetailsService principalDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -62,7 +62,7 @@ public class SecurityConfig {
 
         http
                 .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, principalDetailsService))
         ;
 
 
