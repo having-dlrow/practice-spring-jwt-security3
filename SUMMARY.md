@@ -37,8 +37,10 @@
   2. Bearer(소유자)
      1. oauth2.0 토큰 인증
 
-## Oauth2.0 인증방식
-### Authorization Code
+----
+
+# Oauth2.0 인증방식
+## Authorization Code
    1. 권한 코드(일회성 사용)를 사용, 보안과 권한을 분리하기 위해.
    2. 4가지 타입 중 가장 복잡한 방식.
 
@@ -64,7 +66,7 @@ ex)
 | (POPUP)  | 끝                               |
 
 
-### Implicit "모바일에서 받아서, 서버에 등록하는 반대 방향은 안될까?"
+## Implicit "모바일에서 받아서, 서버에 등록하는 반대 방향은 안될까?"
    1. 자바스크립트/모바일 같은 클라이언트들을 지원하기 위한 승인 유형
    2. 직접 액세스 토큰 획득 ( redirect_url : 자바스크립트 or 모바일 )
 
@@ -102,16 +104,63 @@ function oauthSignIn() {
 }
 ```
 
-### Resource Owner Password Credentials
+## Resource Owner Password Credentials
    1. 보안 취약
    2. 네이버 User +password 정보로 Server에 토큰 발행 요청하는 것
 
 
-### Client Credentials "야! 내가 그냥 네이버야! 뭘 네이버한테 허락을 구해!"
+## Client Credentials "야! 내가 그냥 네이버야! 뭘 네이버한테 허락을 구해!"
    1. Oauth Provider <-> client
    2. 즉, (Server==OauthProvider) <-> client
 
+----
 
+# Spring security
+
+# Client Credentials Grant Type 방식
+![](https://velog.velcdn.com/images/blacklandbird/post/7e286b79-342b-4829-a87f-e792f1ede82a/image.png)
+
+## 인증
+1. Security Context (인메모리 세션저장소) 를 생성 >> SecurityContextHolder 에 저장
+2. usernamePasswordAuthenticationFilter 인증
+3. (인증 성공) SecurityContext 에 `UsernameAuthentication` + `Authentication` 저장
+4. (토근 생성 성공) Session 에 SecurityContext 저장
+
+## 권한
+1. Session 에서 SecurityContext 를 꺼냄
+2. SecurityContext 에서 `Authentication` 있으면, 인증된 유저.
+
+# Security Context
+
+![](https://velog.velcdn.com/images/mooh2jj/post/2aaad7fc-409b-4862-8577-7ee283dba929/image.png)
+
+# Filters
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdG7K7O%2Fbtq3YLd75UT%2FDggosK4oiDRpxYclymDb90%2Fimg.png)
+
+## UsernamePasswordAuthenticationFilter
+- 인증되지 않은 사용자 리다이렉트 필터
+
+#### UsernamePassword(form) 비활성화
+```
+// 5. form 로그인 해제 (UsernamePasswordAuthenticationFilter 비활성화)
+http.formLogin().disable();
+```
+
+## BasicAuthenticationFilter
+1. 헤더 `Basic` 인증 처리
+2. SecurityContextHolder에 저장.
+
+#### httpBasic 비활성화
+```
+// 6. username, password 헤더 로그인 방식 해제 (BasicAuthenticationFilter 비활성화)
+http.httpBasic().disable();
+```
+
+## OncePerRequestFilter
+- filter을 여러번 등록함에 따라, 여러번 호출됨 (이슈)
+- 요청당 한번만 실행을 보장. (해결)
+
+----
 # 멘토님께 질문.
 1. oauth 질문.
    - 회사 내부 API 통신 혹은 Mircro Service 간 JWT 인증 방식을 사용하시나요? 

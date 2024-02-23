@@ -4,6 +4,8 @@ import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
 import com.example.demo.Member.Role;
 import com.example.demo.config.auth.PrincipalDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,8 @@ public class HelloController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ObjectMapper objectMapper;
+
     @GetMapping("/")
     public String greeting() {
         return "Hello, World";
@@ -37,9 +41,11 @@ public class HelloController {
             System.out.println("principal : " + principal.getUser().getPassword());
             System.out.println("principal : " + principal.getUser().getUsername());
 
-            return "<h1>user</h1>";
+            return objectMapper.writeValueAsString(principal);
         } catch (NullPointerException e) {
             return "User not authenticated";
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
