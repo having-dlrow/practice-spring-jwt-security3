@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(   //
-                                        AntPathRequestMatcher.antMatcher("/auth/**")
+                                        AntPathRequestMatcher.antMatcher("/admin/**")
                                 ).authenticated()
                                 .anyRequest().permitAll()
                 )
