@@ -1,13 +1,8 @@
 package com.example.demo.Member;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -22,13 +17,10 @@ public class Member {
 
     String password;
 
-    private String roles;
-    // private List<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles;
 
-    public List<String> getRoleList() {
-        if (this.roles.length() > 0) {
-            return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
+    public List<Role> getRoleList() {
+        return roles;
     }
 }

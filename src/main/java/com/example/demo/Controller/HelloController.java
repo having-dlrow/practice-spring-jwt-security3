@@ -2,12 +2,16 @@ package com.example.demo.Controller;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
+import com.example.demo.Member.Role;
 import com.example.demo.config.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -27,12 +31,16 @@ public class HelloController {
 
     @GetMapping("/user")
     public String user(Authentication authentication) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("principal : " + principal.getUser().getId());
-        System.out.println("principal : " + principal.getUser().getPassword());
-        System.out.println("principal : " + principal.getUser().getUsername());
+        try {
+            PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+            System.out.println("principal : " + principal.getUser().getId());
+            System.out.println("principal : " + principal.getUser().getPassword());
+            System.out.println("principal : " + principal.getUser().getUsername());
 
-        return "<h1>user</h1>";
+            return "<h1>user</h1>";
+        } catch (NullPointerException e) {
+            return "User not authenticated";
+        }
     }
 
     // 어드민이 접근 가능
@@ -44,7 +52,7 @@ public class HelloController {
     @PostMapping("join")
     public String join(@RequestBody Member user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles("ROLE_MANAGER");
+        user.setRoles(List.of(Role.ADMIN));
         memberRepository.save(user);
         return "회원가입완료";
     }

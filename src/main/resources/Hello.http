@@ -3,6 +3,16 @@
 GET localhost:8080/admin/users
 content-Type: application/json
 
+### 유저 가입
+
+POST localhost:8080/join
+content-Type: application/json
+
+{
+  "username": "test",
+  "password": "p@ssword"
+}
+
 ### JWT 획득
 
 POST localhost:8080/login
@@ -13,12 +23,8 @@ content-Type: application/json
   "password": "p@ssword"
 }
 
-### 유저 가입
+### 토큰으로 조회
 
-POST localhost:8080/join
+GET localhost:8080/user
 content-Type: application/json
-
-{
-  "username": "test",
-  "password": "p@ssword"
-}
+authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWQiOjEsImV4cCI6MTcwOTU1MTQwMSwidXNlcm5hbWUiOiJ1c2VyIn0.J5fn0z7cdITHT6Buh2SG22twq5YCAHa0VEL32ASIxFJmqxzUDBy_WRNNJKsJnzMnl1fBJM32Cw9yhmlTlitS3Q

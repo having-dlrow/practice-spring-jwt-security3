@@ -74,7 +74,7 @@ public class PrincipalDetails implements UserDetails {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         user.getRoleList().forEach(r -> {
             authorities.add(() -> {
-                return r;
+                return r.getRole();
             });
         });
         return authorities;

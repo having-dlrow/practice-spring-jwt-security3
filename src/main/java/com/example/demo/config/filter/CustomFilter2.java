@@ -1,12 +1,10 @@
 package com.example.demo.config.filter;
 
 import jakarta.servlet.*;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
-public class CustomFilter1 implements Filter {
+public class CustomFilter2 implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         System.out.println("custom filter : init");
@@ -15,7 +13,7 @@ public class CustomFilter1 implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("custom filter : doFilter");
+        System.out.println("custom filter : doFilter 2");
         filterChain.doFilter(servletRequest,servletResponse);
     }
 
