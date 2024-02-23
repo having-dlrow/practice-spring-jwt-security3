@@ -5,12 +5,12 @@
 ### Filters
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdG7K7O%2Fbtq3YLd75UT%2FDggosK4oiDRpxYclymDb90%2Fimg.png)
 
-1. 인증 시, 새로운 Security Context(인메모리 세션저장소)를 생성하여 SecurityContextHolder에 저장.
+1. **인증**할 때, 새로운 Security Context(인메모리 세션저장소)를 생성하여 SecurityContextHolder에 저장.
 
    a. usernamePasswordAuthenticationFilter) 인증 성공후 SecurityContext에 `UsernameAuthentication` + `Authentication` 저장.
    b. 인증 완료 후, Session에 SecurityContext 저장.
 
-2. 권한 시, Session에서 SecurityContext를 꺼냄 -> SecurityContextHolder에 저장.
+2. **권한**할 때, Session에서 SecurityContext를 꺼냄 -> SecurityContextHolder에 저장.
 
     a. SecurityContext에서 `Authentication` 있으면, 인증된 유저.
 
@@ -53,28 +53,8 @@ http.httpBasic().disable();
 
 
 
-## 이론
-
-### Session
-[Browser] -> [Server] // create session.
-[Browser] <-          // browser save session in cookie.
 
 
-### Access Token
-[Browser] -> /login -> [server] // sessionId exists? Access Token exists?
-[Browser] <-                    // create Access Token (in `JwtAuthenticationFilter` )
-[Browser] ->                    // 
-
-
-### cors, x-frame, 
-
-- 목적 : "인증에 초점(너 내가 인증 준 애가 맞구나!)"
-        "암호가 아니다!"
-- 방법 :
-   1. Http Basic : `https://` 형태로 "email","password"가 암호화 되어 form 제출.
-   2. Bear 인증 : Json Web Token 형태 이므로, "email","password"가 탈취되는 것이 아니라 Token이 탈취됨. (Token은 일정기간 후 재생성.)
-         
--
 ### Filters
 
 [UsernamePasswordAuthenticationFilter] - Jwt인증Filter
